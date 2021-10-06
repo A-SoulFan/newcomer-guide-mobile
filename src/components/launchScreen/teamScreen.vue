@@ -1,13 +1,17 @@
 <!-- 主页面 -->
 <template>
   <div id="teamScreen">
-    launchScreen
+    <historicEvent/>
   </div>
 </template>
 
 <script>
+import historicEvent from "./historicEvent/historicEvent";
 export default {
-  name: "teamScreen"
+  name: "teamScreen",
+  components:{
+    historicEvent
+  }
 }
 </script>
 
