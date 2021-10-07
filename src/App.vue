@@ -2,7 +2,7 @@
   <div id="app">
     <nav-bar></nav-bar>
     <top-contents></top-contents>
-    <component is="teamScreen"></component>
+    <component :is="teamScreen"></component>
     <about-us></about-us>
   </div>
 </template>
@@ -16,7 +16,7 @@ import topContents from "./components/topContents/topContents";
 
 export default {
   beforeCreate() {
-    document.getElementsByTagName("body")[0].setAttribute("style","margin:0");
+    document.getElementsByTagName("body")[0].setAttribute("style", "margin:0");
   },
   name: 'App',
   components: {
@@ -25,13 +25,18 @@ export default {
     teamScreen,
     memberScreen,
     topContents
+  },
+  data() {
+    return {
+      teamScreen
   }
+}
 }
 </script>
 
 <style>
 #app {
-  text-align: center;
-  margin:0;
+  margin: 0;
+  padding: 0;
 }
 </style>

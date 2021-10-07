@@ -15,3 +15,4 @@ export default {
 #memberScreen{
   width: 100vw;
 }
+</style>
