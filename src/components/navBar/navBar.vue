@@ -6,7 +6,7 @@
         <img src="../../assets/image/leftPic.png" alt="left menu pic">
       </div>
       <div class="logo">
-        <img src="../../assets/image/Logo.png" alt="asf logo">
+        <img src="../../assets/image/ASF 白.svg" alt="asf logo">
       </div>
     </div>
     <div class="discount_wrapper" v-show="isShowModel">
@@ -85,6 +85,11 @@ export default {
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
+
+      img {
+        position: relative;
+        height: 60px;
+      }
     }
   }
 

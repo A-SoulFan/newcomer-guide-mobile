@@ -1,13 +1,17 @@
 <!-- 主页面 -->
 <template>
   <div id="teamScreen">
-    launchScreen
+    <team-works></team-works>
   </div>
 </template>
 
 <script>
+import teamWorks from "@/components/launchScreen/TeamWorks/teamWorks";
 export default {
-  name: "teamScreen"
+  name: "teamScreen",
+  components: {
+    teamWorks
+  }
 }
 </script>
 

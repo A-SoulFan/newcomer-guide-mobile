@@ -1,6 +1,6 @@
 <template>
   <div id="topSwiper">
-    <div class="swiper-container">
+    <div class="swiper-container" id="head-swiper">
       <div class="swiper-wrapper">
         <!--单个界面-->
         <div class="swiper-slide" v-for="(picture,index) in pictureList" :key="index">
@@ -67,7 +67,7 @@ export default {
   },
   mounted() {
     // 初始化 swiper 对象
-    new Swiper('.swiper-container', {
+    new Swiper('#head-swiper', {
       // 图片水平切换
       direction: 'horizontal',
       // 覆盖切换鼠标抓手
