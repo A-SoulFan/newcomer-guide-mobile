@@ -1,6 +1,5 @@
 <template>
   <div id="topContents">
-    topContents
   </div>
 </template>
 
