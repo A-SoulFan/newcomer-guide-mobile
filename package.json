@@ -13,6 +13,7 @@
     "core-js": "^3.6.5",
     "husky": "^7.0.1",
     "less": "^4.1.1",
+    "postcss-px-to-viewport": "^1.1.1",
     "reset-css": "^5.0.1",
     "swiper": "^5.4.5",
     "vue": "^2.6.11"
@@ -41,6 +42,27 @@
       "parser": "babel-eslint"
     },
     "rules": {}
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {},
+      "postcss-px-to-viewport": {
+        "unitToConvert": "px",
+        "viewportWidth": 750,
+        "unitPrecision": 5,
+        "propList": ["*"],
+        "viewportUnit": "vw",
+        "fontViewportUnit": "vw",
+        "selectorBlackList": [],
+        "minPixelValue": 1,
+        "mediaQuery": false,
+        "replace": true,
+        "exclude": [],
+        "landscape": false,
+        "landscapeUnit": "vw",
+        "landscapeWidth": 568
+      }
+    }
   },
   "browserslist": [
     "> 1%",
