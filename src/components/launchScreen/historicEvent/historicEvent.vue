@@ -58,14 +58,16 @@
 
 <script>
 import Swiper from 'swiper'
-
+import { experience } from '../../../http/request'
 export default {
   name: "historicEvent",
   data() {
-    return {}
+    return {
+      list:null
+    }
   },
   mounted() {
-    this.historicSwiper = new Swiper('.banner-historic', {
+    new Swiper('.banner-historic', {
       loop: true, // 循环模式选项
       // 如果需要分页器
       pagination: {
@@ -91,6 +93,8 @@ export default {
       },
     })
     this.setPaginationItem()
+    this.list = experience('ava',0,3)
+    console.log(this.list);
   },
   methods:{
     setPaginationItem(){
@@ -104,6 +108,7 @@ export default {
       })
     }
   }
+
 }
 </script>
 
