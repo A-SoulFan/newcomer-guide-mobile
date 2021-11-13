@@ -99,7 +99,7 @@ export default {
     width: 100vw;
     height: 100vh;
     background-color: rgba(255,255,255, 0.6);
-
+    transition: opacity 0.5s cubic-bezier(0, 1, 0.5, 1);  ;
     .mask-close{
       position: absolute;
       top: 30px;

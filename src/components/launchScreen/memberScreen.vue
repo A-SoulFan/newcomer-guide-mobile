@@ -24,5 +24,6 @@ export default {
 <style scoped>
 #memberScreen{
   width: 100vw;
+  padding-bottom: 120px;
 }
 </style>

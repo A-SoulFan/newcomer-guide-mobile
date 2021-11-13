@@ -43,6 +43,8 @@ export default {
       spaceBetween: '4%',
       centeredSlides: true,
       loop: true,
+      observer: true,
+      observerParents: true,
       coverflowEffect: {
         rotate: 8, //slide做3d旋转时Y轴的旋转角度。默认50。
         stretch: 0, //每个slide之间的拉伸值（距离），越大slide靠得越紧。 默认0。

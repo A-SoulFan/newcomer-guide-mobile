@@ -2,11 +2,11 @@
   <div id="teamWorks">
     <h1 class="title">团队作品</h1>
     <!--轮播图-->
-    <div class="swiper-container banner-works">
+    <div  class="swiper-container banner-works">
       <div class="swiper-wrapper works-swiper-wrapper">
-        <div class="swiper-slide works-swiper-slide" v-for="item of 4" :key="item">
+        <div class="swiper-slide works-swiper-slide" v-for="item of videoList" :key="item.date">
           <div class="slide-item works-slide-item">
-            <img class="works-slide-content" src="../../../assets/images/team/图层 531.png">
+            <img class="works-slide-content" :src="item.pritureUrl">
           </div>
         </div>
       </div>
@@ -15,16 +15,15 @@
           <div class="swiper-button-next teamworks-icon" style="transform: scaleX(-1)"></div>
       </div>
       <div class="teamworks-info">
-        <div class="tag">切片</div>
-        <div class="video-name">【A-SOUL/贝&珈&嘉】太潮啦！师徒三人演绎
-          《隔岸 (DJ)》</div>
-        <div class="date">2021-09-08</div>
+        <div class="tag">{{focusSildeInfo.tag}}</div>
+        <div class="video-name">{{focusSildeInfo.videoTitle}}</div>
+        <div class="date">{{focusSildeInfo.date}}</div>
       </div>
       <div class="page-jump">
         <div class="top"></div>
         <div class="down"></div>
         <div class="main">
-          <div class="text">点击前往</div>
+          <div class="text" @click="openBiliBiliUrl(focusSildeInfo.videoUrl)">点击前往</div>
           <div class="learn-icon"></div>
           <div class="jump-arrow">
             <div class="arrow"></div>
@@ -38,29 +37,72 @@
 
 <script type="text/ecmascript-6">
 import Swiper from 'swiper'
+import { getTeamVideos } from '../../../http/request'
 export default {
   name: 'teamWorks',
+  data() {
+    return {
+      flag: false,
+      pageIndex: 0,
+      pageSize: 10,
+      videoList: [],
+      focusSildeIndex: 0,
+      focusSildeInfo: {}
+    }
+  },
+  methods: {
+    initTeamVideos() {
+      getTeamVideos(this.pageIndex,this.pageSize).then(res => {
+        console.log(res , '---teamVideo')
+        this.videoList = res.data.videoList
+        console.log(this.videoList)
+        this.$nextTick(() => {
+          this.initSwiper()
+        })
+      })
+    },
+    getFocusSildeInfo (index) {
+      this.focusSildeIndex = index
+      this.focusSildeInfo = this.videoList[index]
+    },
+    openBiliBiliUrl(url) {
+      window.open(url, '_blank')
+    },
+    initSwiper() {
+      let self = this
+      this.teamWorksSwiper = new Swiper('.banner-works', {
+        loop: true,
+        autoplay: true,
+        effect: 'coverflow',
+        slidesPerView: 1.52,
+        // loopAdditionalSlides: 3,
+        spaceBetween: '4%',
+        centeredSlides: true,
+        observer: true,
+        observerParents: true,
+        coverflowEffect: {
+          rotate: 8, //slide做3d旋转时Y轴的旋转角度。默认50。
+          stretch: 0, //每个slide之间的拉伸值（距离），越大slide靠得越紧。 默认0。
+          depth: -5, //slide的位置深度。值越大z轴距离越远，看起来越小。 默认100。
+          modifier: 1, //depth和rotate和stretch的倍率，相当于            depth*modifier、rotate*modifier、stretch*modifier，值越大这三个参数的效果越明显。默认1。
+          slideShadows: false //开启slide阴影。默认 true。
+        },
+        // 如果需要前进后退按钮
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        on: {
+          slideChangeTransitionStart: function(){
+            self.getFocusSildeInfo(this.realIndex)
+            // alert('改变了，realIndex'+this.realIndex);
+          }
+        }
+      })
+    }
+  },
   mounted() {
-    this.teamWorksSwiper = new Swiper('.banner-works', {
-      effect: 'coverflow',
-      slidesPerView: 1.52,
-      loopAdditionalSlides : 3,
-      spaceBetween: '4%',
-      centeredSlides: true,
-      loop: true,
-      coverflowEffect: {
-        rotate: 8, //slide做3d旋转时Y轴的旋转角度。默认50。
-        stretch: 0, //每个slide之间的拉伸值（距离），越大slide靠得越紧。 默认0。
-        depth: -5, //slide的位置深度。值越大z轴距离越远，看起来越小。 默认100。
-        modifier: 1, //depth和rotate和stretch的倍率，相当于            depth*modifier、rotate*modifier、stretch*modifier，值越大这三个参数的效果越明显。默认1。
-        slideShadows: false //开启slide阴影。默认 true。
-      },
-      // 如果需要前进后退按钮
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-    })
+    this.initTeamVideos()
   },
 }
 </script>
@@ -92,6 +134,7 @@ export default {
           .works-slide-content {
             width: 100%;
             height: 100%;
+            object-fit: cover;
           }
         }
       }
@@ -131,12 +174,12 @@ export default {
         opacity: 0.8;
       }
       .video-name {
-        margin-bottom: 40px;
+        min-height: 70px;
+        margin-bottom: 20px;
         font-size: 30px;
         font-family: FZLTHJW;
         font-weight: normal;
         color: #FFFFFF;
-        line-height: 45px;
       }
       .date {
         margin-bottom: 40px;

@@ -5,36 +5,14 @@
     <!--    轮播图-->
     <div class="swiper-container banner-historic">
       <div class="swiper-wrapper">
-        <div class="swiper-slide historic-swiper-slide" v-for="item of 4" :key="item">
-          <div class="slide-item historic-slide-item">
+        <div class="swiper-slide historic-swiper-slide">
+          <div class="slide-item historic-slide-item" v-for="(item,index) of teamEventList.length % 3" :key="index">
             <h1 class="order">
-              01
+              {{'0' + (index + 1) % 3}}
             </h1>
             <div class="des">
               <div class="txt">
                 珈乐个人图片预告公开
-              </div>
-              <p class="des-date">2020.11.26</p>
-            </div>
-          </div>
-          <div class="historic-slide-item">
-            <h1 class="order">
-              01
-            </h1>
-            <div class="des">
-              <div class="txt">
-                贝拉个人图片预告公开
-              </div>
-              <p class="des-date">2020.11.26</p>
-            </div>
-          </div>
-          <div class="historic-slide-item">
-            <h1 class="order">
-              01
-            </h1>
-            <div class="des">
-              <div class="txt">
-                乃琳个人图片预告公开
               </div>
               <p class="des-date">2020.11.26</p>
             </div>
@@ -45,7 +23,7 @@
       <div class="slider historic-slider">
         <h1 class="date">2021</h1>
         <div class="swiper-pagination historic-swiper-pagination">
-          <div class="historic-pagination-item" v-for="item of 4" :key="item"></div>
+          <div class="historic-pagination-item" v-for="item of paginationNum" :key="item"></div>
         </div>
         <div class="historic-slider-btn">
           <div class="swiper-button-prev historic-icon"></div>
@@ -58,17 +36,21 @@
 
 <script>
 import Swiper from 'swiper'
-import { experience } from '../../../http/request'
+import {getTeamEvents } from '../../../http/request'
 export default {
   name: "historicEvent",
   data() {
     return {
-      list:null
+      list:null,
+      year: '2021',
+      pageIndex: 0,
+      pageNum: 12,
+      teamEventList: [],
+      paginationNum: 1
     }
   },
   mounted() {
     new Swiper('.banner-historic', {
-      loop: true, // 循环模式选项
       // 如果需要分页器
       pagination: {
         el: '.historic-swiper-pagination',
@@ -93,18 +75,42 @@ export default {
       },
     })
     this.setPaginationItem()
-    this.list = experience('ava',0,3)
-    console.log(this.list);
+
+    this.initTeamEventsList()
+
   },
   methods:{
+    initTeamEventsList() {
+      getTeamEvents(this.pageIndex, this.pageNum, this.year).then(res => {
+        console.log('res' ,res)
+        this.teamEventList = res.data.eventList
+        this.countPaginationNum()
+        console.log(this.teamEventList)
+      })
+    },
+    // 根据返回的列表长度计算分页器页数
+    countPaginationNum() {
+      let len = this.teamEventList.length
+      let num = 0
+      if(len <= 3) {
+        num = 1
+      } else {
+        num = Math.floor(len / 3) +  (len % 3 > 0 ? 1 : 0)
+      }
+      this.paginationNum = num
+      console.log('paginationNum' , this.paginationNum)
+    },
+
+
     setPaginationItem(){
       const sliderLen = document.querySelectorAll('.historic-swiper-slide').length
+      console.log('sliderLen',sliderLen)
       const paginationItem = document.querySelectorAll('.historic-pagination-item')
       paginationItem.forEach((item,index) => {
         if (index === 0) {
           item.classList.add('historic-active')
         }
-        item.style.width = (360 / (sliderLen - 2)) + 'px' //设置分页器的宽度
+        item.style.width = (360 / ((sliderLen - 2) <= 0 ? 1 : (sliderLen - 2) ) + 'px') //设置分页器的宽度
       })
     }
   }

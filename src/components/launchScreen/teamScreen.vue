@@ -27,5 +27,6 @@ export default {
 <style scoped>
 #teamScreen{
   width: 100vw;
+  padding-bottom: 120px;
 }
 </style>

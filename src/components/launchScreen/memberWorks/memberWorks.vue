@@ -34,17 +34,19 @@
 
 <script>
 import Swiper from 'swiper'
+import { getMemberVideos } from '../../../http/request'
 
 export default {
   name: "memberWorks",
   data() {
     return {
       flag: 1,
-      memberList:[{id :1,name: '向晚', flag: true},
-                  {id :2,name: '珈乐', flag: false},
-                  {id :3,name: '贝拉', flag: false},
-                  {id :4,name: '乃琳', flag: false},
-                  {id :5,name: '嘉然', flag: false},
+      memberName: 'Ava',
+      memberList:[{id :1,name: '向晚',memberName: 'Ava' , flag: true},
+                  {id :2,name: '珈乐',memberName: 'Carol',  flag: false},
+                  {id :3,name: '贝拉',memberName: 'Bella',  flag: false},
+                  {id :4,name: '乃琳',memberName: 'Eillen',  flag: false},
+                  {id :5,name: '嘉然',memberName: 'Diana',  flag: false},
       ]
     }
   },
@@ -75,11 +77,28 @@ export default {
       },
     })
     this.setPaginationItem()
+    this.obtainVideos()
   },
   methods:{
     chooseMember(item) {
       console.log(item)
+      if(this.flag === item.id) {
+        return
+      }
       this.flag = item.id
+      this.memberName = item.memberName
+      this.obtainVideos()
+    },
+    obtainVideos() {
+      let data ={
+        memberName: this.memberName,
+        pageIndex: 0,
+        pageNum: 10
+      }
+      getMemberVideos(data).then(res => {
+        console.log(res)
+      })
+
     },
 
     setPaginationItem(){

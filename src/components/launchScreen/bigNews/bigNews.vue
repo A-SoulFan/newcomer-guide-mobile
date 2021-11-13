@@ -42,11 +42,18 @@
 
 <script>
 import Swiper from 'swiper'
+import {getMilePosts } from '../../../http/request'
 
 export default {
   name: "newsEvent",
   data() {
-    return {}
+    return {
+      pageIndex: '0',
+      pageSize: '2',
+      year: '2021',// 初始年份
+
+      milePost: ''
+    }
   },
   mounted() {
     this.newsSwiper = new Swiper('.banner-news', {
@@ -75,6 +82,8 @@ export default {
       },
     })
     this.setPaginationItem()
+    this.initMilePost()
+
   },
   methods:{
     setPaginationItem(){
@@ -85,6 +94,11 @@ export default {
           item.classList.add('news-active')
         }
         item.style.width = (360 / (sliderLen - 2)) + 'px' //设置分页器的宽度
+      })
+    },
+    initMilePost() {
+      getMilePosts(this.pageIndex, this.pageSize, this.year).then(res => {
+        console.log(res)
       })
     }
   }
