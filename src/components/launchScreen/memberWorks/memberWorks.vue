@@ -4,7 +4,7 @@
     <h1 class="title">个人作品</h1>
 
     <div class="choose-member" >
-      <div class="member" v-for="item of memberList" :key="item.id" @click="chooseMember(item)">
+      <div class="member" v-for="item of memberList" :key="item.pritureUrl" @click="chooseMember(item)">
         <div class="name">{{item.name}}</div>
         <div :class="{'choose-flag': flag == item.id}"></div>
       </div>
@@ -12,16 +12,16 @@
     <!--轮播图-->
     <div class="swiper-container banner-member-works">
       <div class="swiper-wrapper">
-        <div class="swiper-slide member-works-swiper-slide" v-for="item of 4" :key="item">
-          <div class="slide-item member-works-slide-item">
-            <video class="video-content" scr=""></video>
+        <div class="swiper-slide member-works-swiper-slide" v-for="item of videoList" :key="item.date">
+          <div class="slide-item member-works-slide-item" @click="jumpToBiliBiliVideo(item.videoUrl)">
+            <img class="video-content" :src="item.pritureUrl"/>
           </div>
         </div>
       </div>
       <!--          分页器滑块-->
       <div class="slider member-works-slider">
         <div class="swiper-pagination member-works-swiper-pagination">
-          <div class="member-works-pagination-item" v-for="item of 4" :key="item"></div>
+          <div class="member-works-pagination-item" v-for="item of videoList.length" :key="item"></div>
         </div>
         <div class="member-works-slider-btn">
           <div class="swiper-button-prev member-works-icon"></div>
@@ -41,43 +41,18 @@ export default {
   data() {
     return {
       flag: 1,
-      memberName: 'Ava',
-      memberList:[{id :1,name: '向晚',memberName: 'Ava' , flag: true},
-                  {id :2,name: '珈乐',memberName: 'Carol',  flag: false},
-                  {id :3,name: '贝拉',memberName: 'Bella',  flag: false},
-                  {id :4,name: '乃琳',memberName: 'Eillen',  flag: false},
-                  {id :5,name: '嘉然',memberName: 'Diana',  flag: false},
-      ]
+      memberName: 'ava',
+      memberList:[{id :1,name: '向晚',memberName: 'ava' , flag: true},
+                  {id :2,name: '珈乐',memberName: 'carol',  flag: false},
+                  {id :3,name: '贝拉',memberName: 'bella',  flag: false},
+                  {id :4,name: '乃琳',memberName: 'eileen',  flag: false},
+                  {id :5,name: '嘉然',memberName: 'diana',  flag: false},
+      ],
+      videoList: []
     }
   },
   mounted() {
-    this.memberWorksSwiper = new Swiper('.banner-member-works', {
-      loop: true, // 循环模式选项
-      // 如果需要分页器
-      pagination: {
-        el: '.member-works-swiper-pagination',
-        clickable: true,
-        type: 'custom',
-        renderCustom(swiper, current) {
-          const pagination = document.querySelectorAll('.member-works-pagination-item')
-          // 判断是不是激活焦点，是的话添加active类
-          pagination.forEach(item => {
-            if (pagination[current - 1] === item) {
-              item.classList.add('member-works-active')
-            } else {
-              item.classList.remove('member-works-active')
-            }
-          })
-        }
-      },
-      // 如果需要前进后退按钮
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-    })
-    this.setPaginationItem()
-    this.obtainVideos()
+    this.obtainVideos(this.memberName)
   },
   methods:{
     chooseMember(item) {
@@ -87,23 +62,58 @@ export default {
       }
       this.flag = item.id
       this.memberName = item.memberName
-      this.obtainVideos()
+      console.log('11111')
+      this.obtainVideos(this.memberName)
     },
-    obtainVideos() {
-      let data ={
-        memberName: this.memberName,
-        pageIndex: 0,
-        pageNum: 10
-      }
-      getMemberVideos(data).then(res => {
-        console.log(res)
+    obtainVideos(memberName) {
+      // let data ={
+      //   memberName: this.memberName,
+      //   pageIndex: 0,
+      //   pageNum: 10
+      // }
+      getMemberVideos(memberName).then(res => {
+        this.videoList = res.data.videoList
+        this.memberWorksSwiper = null
+        this.initSwiper()
+        this.setPaginationItem()
       })
-
     },
-
+    jumpToBiliBiliVideo(url) {
+      window.open(url, '_blank')
+    },
+    initSwiper() {
+      this.memberWorksSwiper = new Swiper('.banner-member-works', {
+        observer:true,
+        observeParents: true,
+        // 如果需要分页器
+        pagination: {
+          el: '.member-works-swiper-pagination',
+          clickable: true,
+          type: 'custom',
+          renderCustom(swiper, current) {
+            const pagination = document.querySelectorAll('.member-works-pagination-item')
+            // 判断是不是激活焦点，是的话添加active类
+            pagination.forEach(item => {
+              if (pagination[current - 1] === item) {
+                item.classList.add('member-works-active')
+              } else {
+                item.classList.remove('member-works-active')
+              }
+            })
+          }
+        },
+        // 如果需要前进后退按钮
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+      })
+    },
     setPaginationItem(){
-      const sliderLen = document.querySelectorAll('.member-works-swiper-slide').length
+      let sliderLen = document.querySelectorAll('.member-works-swiper-slide').length
+      console.log(sliderLen, '--')
       const paginationItem = document.querySelectorAll('.member-works-pagination-item')
+      console.log(paginationItem)
       paginationItem.forEach((item,index) => {
         if (index === 0) {
           item.classList.add('member-works-active')
@@ -158,16 +168,16 @@ export default {
   }
 
   .banner-member-works {
-
+    width: 100%;
     margin-top: 40px;
     height: 100%;
     --swiper-navigation-color: #CCCCCC;/* 单独设置按钮颜色 */
     --swiper-navigation-size: 20px;/* 设置按钮大小 */
     .member-works-swiper-slide {
-      margin: 0 35px;
       margin-bottom: 40px;
       width: 100%;
       .member-works-slide-item {
+        margin: 0 35px;
         position: relative;
         .video-content {
           width: 683px;
@@ -178,6 +188,7 @@ export default {
     }
 
     .member-works-slider {
+      width: 100%;
       height: 100px;
       display: flex;
       align-items: center;

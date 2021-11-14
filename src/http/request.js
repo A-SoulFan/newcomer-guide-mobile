@@ -27,8 +27,8 @@ export const getMilePosts = async (pageIndex,pageSize,year) => {
   return res.data
 }
 
-export const getMemberVideos = async (data) => {
-  const res = await http.post(`${prefix_member}/videos`, data)
+export const getMemberVideos = async (memberName) => {
+  const res = await http.get(`${prefix_member}/videos`, {params: {memberName}})
   return res.data
 }
 

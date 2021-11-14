@@ -7,11 +7,13 @@
           <div class="company-name">字节跳动</div>
           <div class="arrow-icon" @click.prevent="contentSwitch"></div>
        </div>
-      <div v-if="openFlag" class="company-content">
-        <div class="content-text">
-          A-SOUL是乐华娱乐与字节跳动合作的虚拟偶像企划，中之人（即虚拟形象扮演者）小姐姐们在动捕房的行为被各种传感设备捕捉，再结合软件渲染而展现出实时、3D的二次元虚拟形象来与观众互动。与传统意义上的虚拟主播不同的是，企划的高技术力支持偶像们带给观众沉浸式地观看与互动体验，同时，有着和观众同样成长经历的偶像们也能带给粉丝们更多共鸣。
+      <transition name="company-animation">
+        <div v-if="openFlag" class="company-content">
+          <div class="content-text">
+            A-SOUL是乐华娱乐与字节跳动合作的虚拟偶像企划，中之人（即虚拟形象扮演者）小姐姐们在动捕房的行为被各种传感设备捕捉，再结合软件渲染而展现出实时、3D的二次元虚拟形象来与观众互动。与传统意义上的虚拟主播不同的是，企划的高技术力支持偶像们带给观众沉浸式地观看与互动体验，同时，有着和观众同样成长经历的偶像们也能带给粉丝们更多共鸣。
+          </div>
         </div>
-      </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -102,6 +104,19 @@ export default {
       color: #333333;
       line-height: 24px;
     }
+  }
+  .company-animation-enter-active {
+    transition: opacity .6s;
+  }
+  .company-animation-enter {
+    opacity: 0;
+  }
+
+  .company-animation-leave-active {
+    transition: opacity .6s;
+  }
+  .company-animation-leave-to {
+    opacity: 0;
   }
 }
 </style>

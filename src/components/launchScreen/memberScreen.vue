@@ -2,6 +2,7 @@
 <template>
   <div id="memberScreen">
     <big-news/>
+    <member-information/>
     <personal-experience/>
     <relevant-entry/>
     <member-works/>
@@ -15,9 +16,10 @@ import PersonalExperience from './personalExperience/personalExperience'
 import RecommendVideo from './recommendVideo/recommendVideo'
 import RelevantEntry from './relevantEntry/relevantEntry'
 import MemberWorks from './memberWorks/memberWorks'
+import MemberInformation from './memberInformation/memberInformation'
 export default {
   name: "memberScreen",
-  components: {MemberWorks, RelevantEntry, RecommendVideo, PersonalExperience, BigNews}
+  components: {MemberInformation, MemberWorks, RelevantEntry, RecommendVideo, PersonalExperience, BigNews}
 }
 </script>
 

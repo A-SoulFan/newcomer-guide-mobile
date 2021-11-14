@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      screen: {componentName: 'teamScreen', name: '团队介绍'}
+      screen: {componentName: 'memberScreen', name: '成员介绍'}
     }
   },
   provide() {
